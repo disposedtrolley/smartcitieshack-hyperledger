@@ -1,0 +1,66 @@
+namespace org.stashit
+
+participant User identified by email {
+  o String email
+  o String firstName
+  o String lastName
+  o Double fundsAvailable
+}
+
+asset StorageLocation identified by storageLocationId {
+  o String storageLocationId
+  o Double costPerPeriod
+  o Integer minLendingPeriod
+  o String periodType   // week, month, year
+  o String totalSize
+  o String streetAddress
+  o String locale
+  --> User owner
+}
+
+asset Item identified by itemId {
+  o String itemId
+  o String value
+  o String description
+  --> User owner
+}
+
+asset ItemStorageRequest identified by requestId {
+  o String requestId
+  --> User requester
+  --> User provider
+  --> StorageLocation storageLocation
+  --> Item[] itemsToStore
+  o Double totalCost
+  o DateTime startDate
+  o Integer lendingPeriod
+  o String status   // pending, approved, declined
+}
+
+asset ItemStorageContract identified by contractId {
+  o String contractId
+  --> ItemStorageRequest approvedRequest
+  o DateTime fulfillmentDate
+}
+
+
+transaction CreateStorageRequest {
+  --> User requester
+  --> User provider
+  --> StorageLocation storageLocation
+  --> Item[] itemsToStore
+  o DateTime startDate
+  o Integer lendingPeriod
+}
+
+transaction ApproveStorageRequest {
+  --> ItemStorageRequest requestToApprove
+}
+
+transaction DeclineStorageRequest {
+  --> ItemStorageRequest requestToDecline
+}
+
+transaction CancelStorageRequest {
+  --> ItemStorageRequest requestToCancel
+}
