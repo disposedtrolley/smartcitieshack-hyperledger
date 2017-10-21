@@ -34,7 +34,7 @@ asset ItemStorageRequest identified by requestId {
   o Double totalCost
   o DateTime startDate
   o Integer lendingPeriod
-  o String status   // pending, approved, declined
+  o String status   // pending, approved, declined, cancelled
 }
 
 asset ItemStorageContract identified by contractId {
